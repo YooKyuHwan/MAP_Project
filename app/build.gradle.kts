@@ -51,4 +51,6 @@ dependencies {
     implementation ("com.squareup.okhttp3:okhttp:4.9.0")
     implementation ("com.github.bumptech.glide:glide:4.13.2")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.13.2")
+
+    implementation ("org.jsoup:jsoup:1.14.3")
 }
