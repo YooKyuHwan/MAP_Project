@@ -7,6 +7,7 @@ data class NewsResponse(
 )
 
 data class Article(
+    val source: sourceDetail,
     val author: String?,
     val title: String,
     val description: String?,
@@ -14,4 +15,9 @@ data class Article(
     val urlToImage: String?,
     val publishedAt: String,
     val content: String?
+)
+
+data class sourceDetail(
+    val id: String,
+    val name: String
 )
