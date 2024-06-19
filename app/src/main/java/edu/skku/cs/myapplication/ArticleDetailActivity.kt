@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.ContactsContract.CommonDataKinds.Im
 import android.util.Log
+import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
@@ -16,6 +18,7 @@ import okhttp3.Callback
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
+import org.json.JSONObject
 import org.jsoup.Jsoup
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -42,6 +45,8 @@ class ArticleDetailActivity : AppCompatActivity() {
         tvAuthor.text = article.author ?: "Unknown Author"
         tvContent.text = article.content
 
+        var str = ""
+
         val formattedDate = formatDateTime(article.publishedAt.toString())
         tvDate.text = formattedDate
         Glide.with(this).load(article.urlToImage).into(ivImage)
@@ -64,7 +69,7 @@ class ArticleDetailActivity : AppCompatActivity() {
                     val html = responseBody.string()
                     val doc = Jsoup.parse(html)
                     val pTags = doc.select("p")
-                    var str = ""
+                    str = ""
                     for(pTag in pTags){
                         val text = pTag.text()
                         str += text + "\n"
@@ -76,6 +81,42 @@ class ArticleDetailActivity : AppCompatActivity() {
                 }
             }
         })
+
+        val btnSummary = findViewById<Button>(R.id.btnSummary)
+        btnSummary.setOnClickListener {
+            Log.i("wer","wer")
+            val title = article.title.toString()
+            val content = str
+                //article.content.toString()
+            Log.i("title", "title: $title")
+            Log.i("cont", "cont: $content")
+
+            ClovaSummaryApiClient.summaryText(title, content, object : Callback{
+                override fun onFailure(call: Call, e: IOException) {
+                    Log.e("ArticleDetailActivity", "API 호출 실패", e)
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    val responseData = response.body?.string()
+                    Log.i("sdf", responseData.toString())
+                    if (response.isSuccessful && responseData != null) {
+                        try {
+                            val jsonResponse = JSONObject(responseData)
+                            val summary = jsonResponse.getString("summary")
+                            Log.i("myLog", "Clova : $summary")
+                            CoroutineScope(Dispatchers.Main).launch {
+                                tvSummary.text = "요약 내용: \n" + summary
+                                tvSummary.visibility = View.VISIBLE
+                            }
+                        } catch (e: Exception) {
+                            Log.e("ArticleDetailActivity", "응답 파싱 실패", e)
+                        }
+                    } else {
+                        //
+                    }
+                }
+            })
+        }
     }
 
     fun formatDateTime(input: String): String {
