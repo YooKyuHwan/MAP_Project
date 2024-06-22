@@ -8,7 +8,7 @@ users = [
 ]
 
 newsList = {'user1': [], 'skku': []}
-newsList['skku'].append('news1')
+newsList['skku'].append({'title': 'exTitle', 'url': 'exUrl'})
 
 @app.route('/users', methods=['GET'])
 def get_users():
@@ -28,19 +28,19 @@ def get_usersNewslist():
     else:
         return jsonify({'error': 'user not found'}), 404
 
-'''
-@app.route('/users/addNews', method=['POST'])
+
+@app.route('/users/addNews', methods=['POST'])
 def add_userNews():
-    new_news = request.get_json()
-'''
+    article_data = request.get_json()
+    userId = article_data.get('id')
+    title = article_data.get('title')
+    url = article_data.get('url')
+    newsList[userId].append({'title': title, 'url': url})
 
-@app.route('/users', methods=['POST'])
-def add_user():
-    new_user = request.get_json()
-    new_user['id'] = len(users) + 1
-    users.append(new_user)
-    return jsonify(new_user), 201
+    print(userId)
+    print(title)
 
+    return jsonify({'res': 'success'}), 200
 
 
 if __name__ == '__main__':

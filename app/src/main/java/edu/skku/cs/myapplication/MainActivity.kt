@@ -78,42 +78,6 @@ class MainActivity : AppCompatActivity() {
             Log.i("loginTeset", userName.toString())
         }
 
-
-
-        //test
-        /*
-        ServerClient.getUser("skku", "skku", object : Callback{
-            override fun onFailure(call: Call, e: IOException) {
-
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                if(response.code == 404){
-                    runOnUiThread {
-                        //textView.text = "User not found or incorrect password"
-                        Toast.makeText(this@MainActivity, "User not found or incorrect password", Toast.LENGTH_SHORT).show()
-                    }
-                }
-                response.body?.let { responseBody ->
-                    val res = responseBody.string()
-                    val jsonObject = JSONObject(res)
-                    val user = UserDTO(
-                        id = jsonObject.getString("id"),
-                        name = jsonObject.getString("name")
-                    )
-                    //val jsonArray = JSONArray(res)
-                    //val users = mutableListOf<UserDTO>()
-
-                    Log.i("testFlask", user.id)
-                    Log.i("testFlask", user.name)
-                    //Log.i("testFlask", users[1].id)
-                }
-            }
-
-        })
-        */
-        //
-
         //https://newsapi.org/v2/everything?q=Apple&from=2024-06-19&sortBy=popularity&apiKey=API_KEY
         btnSearch.setOnClickListener {
             val keyWord = userKeyWord.text.toString()

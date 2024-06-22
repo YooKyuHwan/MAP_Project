@@ -3,9 +3,7 @@ package edu.skku.cs.myapplication
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.util.TypedValue
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -62,7 +60,21 @@ class ArticleDetailActivity : AppCompatActivity() {
         btnSave.setOnClickListener {
             if (userId!=null && userName!=null){
                 //Save news article
+                ServerClient.addNews(userId!!, article.title.toString(), article.url.toString(), object : Callback{
+                    override fun onFailure(call: Call, e: IOException) {
 
+                    }
+
+                    override fun onResponse(call: Call, response: Response) {
+                        runOnUiThread {
+                            val myToast =
+                                Toast.makeText(this@ArticleDetailActivity, "Save This Article", Toast.LENGTH_SHORT)
+                            myToast.show()
+                        }
+                    }
+
+                })
+                Log.i("testAddNews", "Good")
             }else{
                 val myToast = Toast.makeText(this.applicationContext, "You Have to Login First", Toast.LENGTH_SHORT)
                 myToast.show()
