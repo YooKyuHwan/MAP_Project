@@ -63,5 +63,4 @@ class CustomAdapter (private var articles: List<Article>) : RecyclerView.Adapter
         }
 
     }
-
 }

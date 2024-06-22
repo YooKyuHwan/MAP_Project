@@ -1,7 +1,6 @@
 package edu.skku.cs.myapplication
 
 import android.content.Intent
-import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -15,10 +14,7 @@ import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import okhttp3.Call
 import okhttp3.Callback
-import okhttp3.OkHttpClient
 import okhttp3.Response
-import org.json.JSONArray
-import org.json.JSONObject
 import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
@@ -56,6 +52,29 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         })
+
+        val btnMyNews = findViewById<Button>(R.id.btnMynews)
+        btnMyNews.setOnClickListener {
+            if (userId!=null && userName!=null){
+                //Go to myPage
+                runOnUiThread {
+                    val intent = Intent(this@MainActivity, MyNewsPageActivity::class.java).apply {
+                        putExtra("USER_ID", userId)
+                        putExtra("USER_NAME", userName)
+                    }
+                    startActivity(intent)
+                }
+            }else{
+                val myToast = Toast.makeText(this.applicationContext, "You Have to Login First", Toast.LENGTH_SHORT)
+                myToast.show()
+                runOnUiThread {
+                    val intent = Intent(this@MainActivity, LoginActivity::class.java).apply {
+                    }
+                    startActivity(intent)
+                }
+                return@setOnClickListener
+            }
+        }
 
         val btnLogin = findViewById<Button>(R.id.btnLoginMain)
         btnLogin.setOnClickListener {

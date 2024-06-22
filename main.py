@@ -24,7 +24,7 @@ def get_users():
 def get_usersNewslist():
     userId = request.args.get('userId')
     if userId in newsList:
-        return jsonify(newsList[usreId])
+        return jsonify(newsList[userId])
     else:
         return jsonify({'error': 'user not found'}), 404
 
