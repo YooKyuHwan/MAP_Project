@@ -1,13 +1,16 @@
 package edu.skku.cs.myapplication
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
-import android.provider.ContactsContract.CommonDataKinds.Im
 import android.util.Log
+import android.util.TypedValue
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
@@ -26,7 +29,10 @@ import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 
+
 class ArticleDetailActivity : AppCompatActivity() {
+    var userId: String? = null
+    var userName: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_article_detail)
@@ -37,9 +43,37 @@ class ArticleDetailActivity : AppCompatActivity() {
         val tvContent = findViewById<TextView>(R.id.tvContentDetail)
         val tvSummary = findViewById<TextView>(R.id.tvSummary)
         val tvDate = findViewById<TextView>(R.id.tvDate)
+        val btnSave = findViewById<Button>(R.id.btnSave)
 
         val articleJson = intent.getStringExtra("article")
         val article = Gson().fromJson(articleJson, Article::class.java)
+
+        val intent = intent
+        if(intent.hasExtra("USER_ID") && intent.hasExtra("USER_NAME")){
+            userId = intent.getStringExtra("USER_ID")
+            userName = intent.getStringExtra("USER_NAME")
+            Log.i("loginTeset", userId.toString())
+            Log.i("loginTeset", userName.toString())
+        }else{
+            Log.i("loginTeset", userId.toString())
+            Log.i("loginTeset", userName.toString())
+        }
+
+        btnSave.setOnClickListener {
+            if (userId!=null && userName!=null){
+                //Save news article
+
+            }else{
+                val myToast = Toast.makeText(this.applicationContext, "You Have to Login First", Toast.LENGTH_SHORT)
+                myToast.show()
+                runOnUiThread {
+                    val intent = Intent(this@ArticleDetailActivity, LoginActivity::class.java).apply {
+                    }
+                    startActivity(intent)
+                }
+                return@setOnClickListener
+            }
+        }
 
         tvTitle.text = article.title
         tvAuthor.text = article.author ?: "Unknown Author"
@@ -86,11 +120,12 @@ class ArticleDetailActivity : AppCompatActivity() {
         btnSummary.setOnClickListener {
             Log.i("wer","wer")
             val title = article.title.toString()
-            val content = str
+            var content = str
                 //article.content.toString()
             Log.i("title", "title: $title")
             Log.i("cont", "cont: $content")
 
+            content = content.substring(0, 1900)
             ClovaSummaryApiClient.summaryText(title, content, object : Callback{
                 override fun onFailure(call: Call, e: IOException) {
                     Log.e("ArticleDetailActivity", "API 호출 실패", e)

@@ -10,12 +10,13 @@
         android:id="@+id/tvTitleDetail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="TextView"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="Article Title"
         android:textAlignment="center"
         android:gravity="center"
+        android:textColor="#333333"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,12 +27,12 @@
         android:id="@+id/tvDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:text="TextView"
-        android:textSize="16sp"
-        android:textStyle="bold"
+        android:text="Date"
+        android:textColor="#666666"
+        android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/ivImageDetail"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTitleDetail" />
@@ -40,12 +41,12 @@
         android:id="@+id/tvAuthorDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
-        android:text="TextView"
-        android:textSize="16sp"
-        android:textStyle="bold"
+        android:text="Author"
+        android:textColor="#666666"
+        android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/ivImageDetail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTitleDetail" />
@@ -53,22 +54,52 @@
     <ImageView
         android:id="@+id/ivImageDetail"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:scaleType="centerCrop"
         android:src="@drawable/ic_launcher_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvAuthorDetail" />
+        app:layout_constraintTop_toBottomOf="@+id/tvAuthorDetail"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/btnSummary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="#6200EE"
+        android:text="Summary"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        app:cornerRadius="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivImageDetail" />
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#6200EE"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        app:cornerRadius="12dp"
+        android:text="SAVE"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivImageDetail" />
 
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -84,25 +115,23 @@
                 android:id="@+id/tvContentDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="Content"
+                android:textColor="#333333"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tvSummary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView"
+                android:layout_marginTop="16dp"
+                android:background="#EFEFEF"
+                android:padding="16dp"
+                android:text="Summary"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                android:textStyle="italic"
                 android:visibility="gone" />
         </LinearLayout>
     </ScrollView>
-
-    <Button
-        android:id="@+id/btnSummary"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="Summary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivImageDetail" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,9 +1,11 @@
 package edu.skku.cs.myapplication
 
 import android.content.Intent
+import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -15,12 +17,17 @@ import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.OkHttpClient
 import okhttp3.Response
+import org.json.JSONArray
+import org.json.JSONObject
 import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
     private lateinit var customAdapter: CustomAdapter
     private lateinit var newsList: RecyclerView
     private lateinit var userKeyWord: EditText
+
+    var userId: String? = null
+    var userName: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,10 +48,71 @@ class MainActivity : AppCompatActivity() {
                 Log.i("myLog", "Click Item idx: $position")
                 val intent = Intent(this@MainActivity, ArticleDetailActivity::class.java).apply {
                     putExtra("article", Gson().toJson(customAdapter.getItem(position)))
+                    if(userId!=null && userName!=null){
+                        putExtra("USER_ID", userId)
+                        putExtra("USER_NAME", userName)
+                    }
                 }
                 startActivity(intent)
             }
         })
+
+        val btnLogin = findViewById<Button>(R.id.btnLoginMain)
+        btnLogin.setOnClickListener {
+            runOnUiThread {
+                val intent = Intent(this@MainActivity, LoginActivity::class.java).apply {
+                }
+                startActivity(intent)
+            }
+        }
+
+        val intent = intent
+        if(intent.hasExtra("USER_ID") && intent.hasExtra("USER_NAME")){
+            userId = intent.getStringExtra("USER_ID")
+            userName = intent.getStringExtra("USER_NAME")
+            Log.i("loginTeset", userId.toString())
+            Log.i("loginTeset", userName.toString())
+            btnLogin.visibility = View.GONE
+        }else{
+            Log.i("loginTeset", userId.toString())
+            Log.i("loginTeset", userName.toString())
+        }
+
+
+
+        //test
+        /*
+        ServerClient.getUser("skku", "skku", object : Callback{
+            override fun onFailure(call: Call, e: IOException) {
+
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if(response.code == 404){
+                    runOnUiThread {
+                        //textView.text = "User not found or incorrect password"
+                        Toast.makeText(this@MainActivity, "User not found or incorrect password", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                response.body?.let { responseBody ->
+                    val res = responseBody.string()
+                    val jsonObject = JSONObject(res)
+                    val user = UserDTO(
+                        id = jsonObject.getString("id"),
+                        name = jsonObject.getString("name")
+                    )
+                    //val jsonArray = JSONArray(res)
+                    //val users = mutableListOf<UserDTO>()
+
+                    Log.i("testFlask", user.id)
+                    Log.i("testFlask", user.name)
+                    //Log.i("testFlask", users[1].id)
+                }
+            }
+
+        })
+        */
+        //
 
         //https://newsapi.org/v2/everything?q=Apple&from=2024-06-19&sortBy=popularity&apiKey=API_KEY
         btnSearch.setOnClickListener {
@@ -86,5 +154,17 @@ class MainActivity : AppCompatActivity() {
                 }
             })
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(userId, userId.toString())
+        outState.putString(userName, userName.toString())
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        userId = savedInstanceState.getString(userId, null)
+        userId = savedInstanceState.getString(userName, null)
     }
 }
